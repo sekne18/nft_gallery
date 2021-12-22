@@ -53,7 +53,7 @@ class _TabScreenState extends State<TabScreen> {
         Align(
           alignment: Alignment.bottomCenter,
           child: SizedBox(
-            height: 45,
+            height: 58,
             child: BottomNavigationBar(
               onTap: _selectPage,
               selectedFontSize: 0,

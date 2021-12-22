@@ -16,7 +16,7 @@ class NFTList extends StatelessWidget {
         ? LayoutBuilder(builder: (ctx, constraints) {
             return Center(
               child: Text(
-                "Don't own any NFTs yet!",
+                "You don't own any NFTs yet!",
                 style: Theme.of(context).textTheme.headline6,
               ),
             );

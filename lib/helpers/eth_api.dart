@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:nft_gallery/models/nft.dart';
 import 'package:nft_gallery/models/profile.dart';
-
-import 'helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EthAPI {
   static const String _API_KEY = "8E3SY6IA38VWDESYM3V2E5IWM364BVGV3V";
@@ -21,10 +22,13 @@ class EthAPI {
       var nftsJson = json.decode(response.body);
       for (var nft in nftsJson['assets']) {
         if (nft['image_url'] != "") {
+          http.Response response = await http.get(
+            Uri.parse(nft['image_url']),
+          );
           _userNFTs.add(
             NFT(
               id: nft['id'].toString(),
-              image: nft['image_url'],
+              image: NFT.base64String(response.bodyBytes),
               name: nft['name'].toString(),
               creator: nft['creator']['user']['username'] ?? "",
               total_supply: nft['asset_contract']['total_supply'] != null
@@ -35,8 +39,9 @@ class EthAPI {
         }
       }
     }
-    // String encodedData = NFT.encode(_userNFTs);
-    // Helper.prefs.setString('listOfNFTs', encodedData);
+    String encodedData = NFT.encode(_userNFTs);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('listOfNFTs', encodedData);
     return _userNFTs;
   }
 

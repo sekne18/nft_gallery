@@ -20,14 +20,14 @@ class NFTDetailsScreen extends StatelessWidget {
         tag: 'nft_image_${nft.id}',
         child: Stack(
           children: <Widget>[
-            Image.network(nft.image),
+            NFT.imageFromBase64String(nft.image),
             Container(
               margin: EdgeInsets.only(top: size.height * 0.45),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(35),
                     topRight: Radius.circular(35)),
-                color: Colors.white,
+                color: Theme.of(context).scaffoldBackgroundColor,
               ),
               padding: const EdgeInsets.only(top: 60),
             ),

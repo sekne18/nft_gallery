@@ -38,23 +38,21 @@ class NFTItem extends StatelessWidget {
           ),
         );
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          color: Colors.transparent,
-          elevation: 6,
-          child: Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: ClipRRect(
+      child: Hero(
+        tag: 'nft_image_${nft.id}',
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Card(
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
-              child: Hero(
-                child: Image.network(
-                  nft.image,
-                ),
-                tag: 'nft_image_${nft.id}',
+            ),
+            color: Colors.transparent,
+            elevation: 6,
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: NFT.imageFromBase64String(nft.image),
               ),
             ),
           ),
