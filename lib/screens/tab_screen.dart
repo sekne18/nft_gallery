@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nft_gallery/provider/theme_provider.dart';
 
 import 'collection_screen.dart';
-import 'profile_screen.dart';
+import 'profile/profile_screen.dart';
 import 'search_screen.dart';
 
 class TabScreen extends StatefulWidget {

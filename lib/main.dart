@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nft_gallery/provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'screens/collection_screen.dart';
-import 'screens/profile_screen.dart';
+import 'screens/profile/profile_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/tab_screen.dart';
 
