@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nft_gallery/provider/theme_provider.dart';
-import 'package:nft_gallery/screens/nft_details_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/collection_screen.dart';
 import 'screens/profile_screen.dart';

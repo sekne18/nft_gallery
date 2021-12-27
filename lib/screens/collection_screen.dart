@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nft_gallery/helpers/eth_api.dart';
+import 'package:nft_gallery/helpers/helper.dart';
 import 'package:nft_gallery/models/nft.dart';
 import 'package:nft_gallery/models/profile.dart';
 import 'package:nft_gallery/widgets/nft_list.dart';
@@ -14,8 +15,6 @@ class CollectionScreen extends StatefulWidget {
 
 class _CollectionScreenState extends State<CollectionScreen> {
   List<NFT> _userNFTs = [];
-  String address = "0x8637d538488513e3f71b5399fa04d2fb6ec19a4c";
-  String walletType = "Ethereum";
 
   void loadNFTs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -24,12 +23,13 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 .difference(DateTime.now())
                 .inHours >
             1) {
-      EthAPI.fetchNFTs(_userNFTs, address).then((_) {
+      EthAPI.fetchNFTs(_userNFTs, Helper.address).then((_) {
         setState(() {
           _userNFTs = _;
+          Profile.nfts_owned = _userNFTs.length;
         });
       });
-      EthAPI.fetchProfile(_userNFTs, address, walletType);
+      EthAPI.fetchProfile(_userNFTs, Helper.address, Helper.walletType);
     } else {
       setState(() {
         _userNFTs = NFT.decode(prefs.getString('listOfNFTs') ?? "");

@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
                   backgroundColor:
                       Theme.of(context).primaryColor == Colors.black
                           ? Colors.white
-                          : Colors.black,
+                          : Colors.grey.shade900,
                   radius: 80,
                   child: Image.network(Profile.image),
                 ),
@@ -43,21 +43,21 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 15.0),
+                      margin: const EdgeInsets.only(bottom: 15.0),
                       child: Text(
-                        "Number of NFTs: ${Profile.nfts_owned}",
+                        "Number of NFTs owned: ${Profile.nfts_owned}",
                         style: const TextStyle(fontSize: 17),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                      margin: const EdgeInsets.only(top: 15.0, bottom: 15.0),
                       child: Text(
                         "Wallet balance: ${Profile.balance} ETH",
                         style: const TextStyle(fontSize: 17),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 15.0),
+                      margin: const EdgeInsets.only(top: 15.0),
                       child: Text(
                         "Last synched: ${Profile.last_synched}",
                         style: const TextStyle(fontSize: 17),
