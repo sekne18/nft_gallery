@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:nft_gallery/models/nft.dart';
 
 import 'nft_item.dart';
 
 class NFTList extends StatelessWidget {
   final List<NFT> nfts;
+  int index = -1;
 
   NFTList(
     this.nfts,
@@ -30,14 +32,20 @@ class NFTList extends StatelessWidget {
               padding: const EdgeInsets.all(4.0),
               mainAxisSpacing: 4.0,
               crossAxisSpacing: 4.0,
-              children: nfts
-                  .map(
-                    (tx) => NFTItem(
+              children: nfts.map((tx) {
+                return AnimationConfiguration.staggeredGrid(
+                  position: index++,
+                  duration: const Duration(milliseconds: 650),
+                  columnCount: 2,
+                  child: ScaleAnimation(
+                    scale: 0.2,
+                    child: NFTItem(
                       key: ValueKey(tx.id),
                       nft: tx,
                     ),
-                  )
-                  .toList(),
+                  ),
+                );
+              }).toList(),
             ),
           );
   }

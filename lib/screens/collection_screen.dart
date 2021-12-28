@@ -15,6 +15,7 @@ class CollectionScreen extends StatefulWidget {
 
 class _CollectionScreenState extends State<CollectionScreen> {
   List<NFT> _userNFTs = [];
+  bool _loading = false;
 
   void loadNFTs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -27,18 +28,21 @@ class _CollectionScreenState extends State<CollectionScreen> {
         setState(() {
           _userNFTs = _;
           Profile.nfts_owned = _userNFTs.length;
+          _loading = false;
         });
       });
       EthAPI.fetchProfile(_userNFTs, Helper.address, Helper.walletType);
     } else {
       setState(() {
         _userNFTs = NFT.decode(prefs.getString('listOfNFTs') ?? "");
+        _loading = false;
       });
     }
   }
 
   @override
   void initState() {
+    _loading = true;
     loadNFTs();
     super.initState();
   }
@@ -46,7 +50,13 @@ class _CollectionScreenState extends State<CollectionScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: NFTList(_userNFTs),
+      child: _loading
+          ? Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).iconTheme.color,
+              ),
+            )
+          : NFTList(_userNFTs),
     );
   }
 }

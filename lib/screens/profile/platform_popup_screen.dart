@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:nft_gallery/helpers/helper.dart';
 import 'package:nft_gallery/widgets/platforms_list.dart';
 
 class PlatformPopupScreen extends StatelessWidget {
