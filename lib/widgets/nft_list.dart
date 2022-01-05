@@ -38,7 +38,7 @@ class NFTList extends StatelessWidget {
                   duration: const Duration(milliseconds: 650),
                   columnCount: 2,
                   child: ScaleAnimation(
-                    scale: 0.2,
+                    scale: 0.0,
                     child: NFTItem(
                       key: ValueKey(tx.id),
                       nft: tx,

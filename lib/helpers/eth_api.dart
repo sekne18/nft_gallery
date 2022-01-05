@@ -59,9 +59,10 @@ class EthAPI {
           http.Response response = await http.get(
             Uri.parse(nft['image_url']),
           );
-          var tmp = nft['creator']['user'];
-          String creator = nft['creator']['user'] != null
-              ? nft['creator']['user']['username'] ?? "Not found"
+          String creator = nft['creator'] != null
+              ? nft['creator']['user'] != null
+                  ? nft['creator']['user']['username'] ?? "Not found"
+                  : "Not found"
               : "Not found";
           _userNFTs.add(
             NFT(

@@ -31,6 +31,36 @@ class NFTDetailsScreen extends StatelessWidget {
               ),
               padding: const EdgeInsets.only(top: 60),
             ),
+            Material(
+              type: MaterialType.transparency,
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(top: size.height * 0.51),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      nft.name,
+                      style: const TextStyle(
+                        fontSize: 23,
+                      ),
+                    ),
+                    Text(
+                      "Copies: " + nft.total_supply.toString(),
+                      style: const TextStyle(
+                        fontSize: 23,
+                      ),
+                    ),
+                    Text(
+                      "Creator: " + nft.creator,
+                      style: const TextStyle(
+                        fontSize: 23,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
