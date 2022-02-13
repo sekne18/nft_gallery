@@ -1,2 +1,2 @@
 # NFTGallery
- App for showing an NFT collection
+This app unfortunately has no longer working API. 
