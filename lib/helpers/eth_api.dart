@@ -8,8 +8,6 @@ import 'package:nft_gallery/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EthAPI {
-  static const String _API_KEY = "8E3SY6IA38VWDESYM3V2E5IWM364BVGV3V";
-
   static Future<List<NFT>> fetchNFTs(
       List<NFT> _userNFTs, String _walletAddress) async {
     _userNFTs = [];

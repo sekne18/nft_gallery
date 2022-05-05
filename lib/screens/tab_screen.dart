@@ -68,15 +68,15 @@ class _TabScreenState extends State<TabScreen> {
                   icon: Icon(
                     Icons.filter,
                   ),
-                  title: SizedBox.shrink(),
+                  label: "",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.search),
-                  title: SizedBox.shrink(),
+                  label: "",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
-                  title: SizedBox.shrink(),
+                  label: "",
                 ),
               ],
             ),

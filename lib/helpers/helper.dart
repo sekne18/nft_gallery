@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 
 class Helper {
-  static String address = "0x8637d538488513e3f71b5399fa04d2fb6ec19a4c";
+  static String address = "0x54b174179ae825ed630da40b625bb3c883cd40ae";
   static String walletType = "Ethereum";
 
   static const String imagesKey = "nft_images";
