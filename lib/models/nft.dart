@@ -7,15 +7,15 @@ class NFT {
   String id;
   String name;
   String image;
-  String creator;
   int total_supply;
+  String description;
 
   NFT({
     required this.id,
     required this.name,
     required this.image,
-    required this.creator,
     required this.total_supply,
+    required this.description,
   });
 
   factory NFT.fromJson(Map<String, dynamic> jsonData) {
@@ -23,8 +23,8 @@ class NFT {
       id: jsonData['fingerprint'],
       name: jsonData['name'],
       image: jsonData['image'],
-      creator: jsonData['creator'],
       total_supply: jsonData['total_supply'],
+      description: jsonData['description'],
     );
   }
 
@@ -32,8 +32,8 @@ class NFT {
         'fingerprint': nft.id,
         'name': nft.name,
         'total_supply': nft.total_supply,
-        'creator': nft.creator,
         'image': nft.image,
+        'description': nft.description,
       };
 
   static String encode(List<NFT> nfts) => json.encode(

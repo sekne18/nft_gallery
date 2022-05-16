@@ -51,12 +51,12 @@ class NFTDetailsScreen extends StatelessWidget {
                         fontSize: 23,
                       ),
                     ),
-                    Text(
-                      "Creator: " + nft.creator,
-                      style: const TextStyle(
-                        fontSize: 23,
-                      ),
-                    ),
+                    // Text(
+                    //   "Creator: " + nft.creator,
+                    //   style: const TextStyle(
+                    //     fontSize: 23,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

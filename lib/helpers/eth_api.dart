@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:nft_gallery/models/nft.dart';
@@ -11,31 +14,47 @@ class EthAPI {
   static Future<List<NFT>> fetchNFTs(
       List<NFT> _userNFTs, String _walletAddress) async {
     _userNFTs = [];
+    int i = 0;
     String url =
-        "https://api.opensea.io/api/v1/assets?&owner=${_walletAddress}&format=json";
+        "https://eth-mainnet.alchemyapi.io/v2/demo/getNFTs/?owner=${_walletAddress}";
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var nftsJson = json.decode(response.body);
-      for (var nft in nftsJson['assets']) {
-        if (nft['image_url'] != "") {
-          http.Response response = await http.get(
-            Uri.parse(nft['image_url']),
-          );
-          String creator = nft['creator']['user'] != null
-              ? nft['creator']['user']['username'] ?? "Not found"
-              : "Not found";
-          _userNFTs.add(
-            NFT(
-              id: nft['id'].toString(),
-              image: NFT.base64String(response.bodyBytes),
-              name: nft['name'].toString(),
-              creator: creator,
-              total_supply: nft['asset_contract']['total_supply'] != null
-                  ? int.parse(nft['asset_contract']['total_supply']) + 1
-                  : 0,
-            ),
-          );
-        }
+      nftsJson = nftsJson["ownedNfts"].length > 50 ? nftsJson["ownedNfts"].sublist(0,12) : nftsJson["ownedNfts"];
+      for (var nft in nftsJson) {
+            try {
+              String url = nft['metadata']["image"];
+              if (url.contains("ipfs://")) {
+                url = url.replaceAll("ipfs://", "https://ipfs.moralis.io:2053/ipfs/");
+              }
+              http.Response res = await http.get(
+                Uri.parse(url),
+              );
+
+              _userNFTs.add(
+                NFT(
+                  id: i.toString(),
+                  image: NFT.base64String(res.bodyBytes),
+                  name: nft['metadata']["name"].toString() ?? "Unknown",
+                  total_supply: int.parse(nft['balance']) ?? 1,
+                  description: nft['description'] ?? "",
+                ),
+              );
+              i++;
+            } catch (e) {
+              _userNFTs.add(
+                NFT(
+                  id: i.toString(),
+                  image: NFT.base64String(
+                      (await rootBundle.load('assets/images/noimage.png')).buffer.asUint8List()),
+                  name: nft['metadata']["name"].toString() ?? "Unknown",
+                  total_supply: nft['balance'] != null ? int.parse(nft['balance']) : 1,
+                  description: nft['description'] ?? "",
+                ),
+              );
+              i++;
+            }
+
       }
     }
     String encodedData = NFT.encode(_userNFTs);
@@ -47,32 +66,27 @@ class EthAPI {
   static Future<List<NFT>> searchNFTs(
       List<NFT> _userNFTs, String _walletAddress) async {
     _userNFTs = [];
+    int i = 0;
     String url =
-        "https://api.opensea.io/api/v1/assets?&owner=${_walletAddress}&limit=50&format=json";
+        "https://eth-mainnet.alchemyapi.io/v2/demo/getNFTs/?owner=${_walletAddress}";
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var nftsJson = json.decode(response.body);
       for (var nft in nftsJson['assets']) {
         if (nft['image_url'] != "") {
-          http.Response response = await http.get(
+          http.Response res = await http.get(
             Uri.parse(nft['image_url']),
           );
-          String creator = nft['creator'] != null
-              ? nft['creator']['user'] != null
-                  ? nft['creator']['user']['username'] ?? "Not found"
-                  : "Not found"
-              : "Not found";
           _userNFTs.add(
             NFT(
               id: nft['id'].toString(),
-              image: NFT.base64String(response.bodyBytes),
-              name: nft['name'].toString(),
-              creator: creator,
-              total_supply: nft['asset_contract']['total_supply'] != null
-                  ? int.parse(nft['asset_contract']['total_supply']) + 1
-                  : 0,
+              image: NFT.base64String(res.bodyBytes),
+              name: nft['metadata']["name"].toString(),
+              total_supply: nft['balance'],
+              description: nft['description'],
             ),
           );
+          i++;
         }
       }
     }

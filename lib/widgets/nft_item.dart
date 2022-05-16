@@ -4,11 +4,9 @@ import 'package:nft_gallery/screens/nft_details_screen.dart';
 
 class NFTItem extends StatelessWidget {
   final NFT nft;
-  final Key key;
 
   NFTItem({
     required this.nft,
-    required this.key,
   });
 
   @override

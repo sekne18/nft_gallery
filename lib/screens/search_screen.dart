@@ -71,7 +71,6 @@ class _SearchScreenState extends State<SearchScreen> {
                     children: _searchedNFTs
                         .map(
                           (tx) => NFTItem(
-                            key: ValueKey(tx.id),
                             nft: tx,
                           ),
                         )

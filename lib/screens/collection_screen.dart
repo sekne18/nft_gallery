@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:nft_gallery/helpers/eth_api.dart';
 import 'package:nft_gallery/helpers/helper.dart';
 import 'package:nft_gallery/models/nft.dart';
@@ -15,9 +16,12 @@ class CollectionScreen extends StatefulWidget {
 
 class _CollectionScreenState extends State<CollectionScreen> {
   List<NFT> _userNFTs = [];
-  bool _loading = false;
+  List<int> verticalData = [];
 
-  void loadNFTs() async {
+  final int increment = 10;
+  bool isLoadingVertical = false;
+
+  Future loadNFTs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (Profile.last_synched == "" ||
         DateTime.parse(Profile.last_synched)
@@ -28,35 +32,48 @@ class _CollectionScreenState extends State<CollectionScreen> {
         setState(() {
           _userNFTs = _;
           Profile.nfts_owned = _userNFTs.length;
-          _loading = false;
         });
       });
       EthAPI.fetchProfile(_userNFTs, Helper.address, Helper.walletType);
     } else {
       setState(() {
         _userNFTs = NFT.decode(prefs.getString('listOfNFTs') ?? "");
-        _loading = false;
       });
     }
   }
 
+  Future _loadMoreVertical() async {
+    setState(() {
+      isLoadingVertical = true;
+    });
+
+    // Add in an artificial delay
+    await new Future.delayed(const Duration(seconds: 2));
+    await loadNFTs();
+    verticalData.addAll(
+        List.generate(increment, (index) => verticalData.length + index));
+
+    setState(() {
+      isLoadingVertical = false;
+    });
+  }
+
   @override
   void initState() {
-    _loading = true;
-    loadNFTs();
     super.initState();
+    _loadMoreVertical();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: _loading
-          ? Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).iconTheme.color,
-              ),
-            )
-          : NFTList(_userNFTs),
+    return LazyLoadScrollView(
+      isLoading: isLoadingVertical,
+      onEndOfPage: () => _loadMoreVertical(),
+      child: Scrollbar(
+        child: SafeArea(
+          child: NFTList(_userNFTs, verticalData),
+        ),
+      ),
     );
   }
 }

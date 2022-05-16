@@ -6,10 +6,12 @@ import 'nft_item.dart';
 
 class NFTList extends StatelessWidget {
   final List<NFT> nfts;
+  List<int> verticalData;
   int index = -1;
 
   NFTList(
     this.nfts,
+    this.verticalData,
   );
 
   @override
@@ -23,30 +25,38 @@ class NFTList extends StatelessWidget {
               ),
             );
           })
-        : Padding(
-            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-            child: GridView.count(
-              physics: const BouncingScrollPhysics(),
-              crossAxisCount: 2,
-              childAspectRatio: 1,
-              padding: const EdgeInsets.all(4.0),
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-              children: nfts.map((tx) {
-                return AnimationConfiguration.staggeredGrid(
-                  position: index++,
-                  duration: const Duration(milliseconds: 650),
-                  columnCount: 2,
-                  child: ScaleAnimation(
-                    scale: 0.0,
-                    child: NFTItem(
-                      key: ValueKey(tx.id),
-                      nft: tx,
-                    ),
-                  ),
-                );
-              }).toList(),
+        : Scrollbar(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+              child: GridView.builder(
+                // shrinkWrap: true,
+                padding: const EdgeInsets.all(4.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5.0,
+                  mainAxisSpacing: 5.0,
+                ),
+                itemCount: verticalData.length,
+                itemBuilder: (context, position) {
+                  return NFTItem(nft: nfts[position],);
+                },
+              ),
             ),
-          );
+        );
   }
 }
+
+// nfts.map((tx) {
+// return AnimationConfiguration.staggeredGrid(
+// position: index++,
+// duration: const Duration(milliseconds: 650),
+// columnCount: 2,
+// child: ScaleAnimation(
+// scale: 0.0,
+// child: NFTItem(
+// key: ValueKey(tx.id),
+// nft: tx,
+// ),
+// ),
+// );
+// }).toList(),
